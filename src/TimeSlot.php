@@ -181,4 +181,31 @@ class TimeSlot
         $start->setTimezone('UTC');
         return $start->toIso8601String();
     }
+    
+
+	
+    // getTimeSlot(IntervalInMinutes, $startTime, $endTime)
+    //     added
+    function getTimeSlot($interval, $start, $end)
+    {
+        $start = new DateTime($start);
+        $end = new DateTime($end);
+        $start_time = $start->format('H:i'); // Get time Format in Hour and minutes
+        $end_time = $end->format('H:i');
+        $i=0;
+        while(strtotime($start_time) <= strtotime($end_time)){
+            $start = $start_time;
+            $end = date('H:i',strtotime('+'.$interval.' minutes',strtotime($start_time)));
+            $start_time = date('H:i',strtotime('+'.$interval.' minutes',strtotime($start_time)));
+            $i++;
+            if(strtotime($start_time) <= strtotime($end_time)){
+                $time[$i]['start'] = $start;
+                $time[$i]['end'] = $end;
+            }
+        }
+        return $time;
+    }
+    //     $slot = getTimeSlot(15, '10:00', '13:00');
+
+
 }
